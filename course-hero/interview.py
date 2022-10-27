@@ -65,8 +65,38 @@ def course_string_to_object_step_by_step(course_str):
     course = Course(department, course, year, semester)
     print(course)
 
+def course_string_to_object_with_regex(course_str):
+    match = re.findall(r'([a-zA-Z]+)[-| |:]?(\d+) (\w+)[ ]?(\w+)', course_str)
+    print(match)
+    department, course_number, year, semester = '', '', '', ''
+    if len(match) > 0:
+        department, course_number, year_or_semester, semester_or_year = match[0]
+        if year_or_semester.isdigit():
+            year = year_or_semester
+            semester = semester_or_year
+        else:
+            year = semester_or_year
+            semester = year_or_semester
+    # print('department', department)
+    # print('course_number', course_number)
+    # print('year', year)
+    # print('semester', semester)
+    if len(year) == 2:
+        year = datetime.datetime.strptime(year,'%y').strftime('%Y')
+    
+    if len(semester) <= 2:
+        semester = SEMESTER[semester.lower()]
+    else:
+        semester = semester.capitalize()
+
+    course = Course(department, course_number, year, semester)
+    print(course)
+
 
 if __name__ == '__main__':
-    course_string_to_object_step_by_step('CS:111 16 fall')
-    course_string_to_object_step_by_step('CS-111 Fall 2016')
-    course_string_to_object_step_by_step('CS111 F2016')
+    # course_string_to_object_step_by_step('CS:111 16 fall')
+    # course_string_to_object_step_by_step('CS-111 Fall 2016')
+    # course_string_to_object_step_by_step('CS111 F2016')
+    # course_string_to_object_with_regex('CS:111 16 fall')
+    # course_string_to_object_with_regex('CS-111 Fall 2016')
+    course_string_to_object_with_regex('CS111 F2016')
