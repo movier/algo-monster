@@ -1,22 +1,28 @@
 import datetime
 import re
 
-class Course:
-    def __init__(self, department, course_number, year, semester):
-        self.department = department
-        self.course_number = course_number
-        self.year = year
-        self.semester = semester
-    
-    def __str__(self):
-        return f'Department: {self.department}, Course Number: {self.course_number}, Year: {self.year}, Semester: {self.semester}'
-
 SEMESTER = {
     'f': 'Fall',
     'w': 'Winter',
     's': 'Spring',
     'su': 'Summer'
 }
+
+class Course:
+    def __init__(self, department, course_number, year, semester):
+        self.department = department
+        self.course_number = course_number
+        self.year = year
+        if len(year) == 2:
+            self.year = datetime.datetime.strptime(year,'%y').strftime('%Y')
+    
+        if len(semester) <= 2:
+            self.semester = SEMESTER[semester.lower()]
+        else:
+            self.semester = semester.capitalize()
+    
+    def __str__(self):
+        return f'Department: {self.department}, Course Number: {self.course_number}, Year: {self.year}, Semester: {self.semester}'
 
 def course_string_to_object_step_by_step(course_str):
     
@@ -52,18 +58,10 @@ def course_string_to_object_step_by_step(course_str):
     else:
         if semester_year_str[0].isdigit():
             semester = semester_year_str.strip('0123456789')
-            year  = semester_year_str[0:len(semester)]
+            year  = semester_year_str[0:len(semester_year_str) - len(semester)]
         else:
             semester = semester_year_str.rstrip('0123456789')
             year  = semester_year_str[len(semester):]
-    
-    if len(year) == 2:
-        year = datetime.datetime.strptime(year,'%y').strftime('%Y')
-    
-    if len(semester) <= 2:
-        semester = SEMESTER[semester.lower()]
-    else:
-        semester = semester.capitalize()
 
     return Course(department, course_number, year, semester)
 
@@ -78,14 +76,6 @@ def course_string_to_object_with_regex(course_str):
             department, course_number, year, semester = match[0]
         else:
             return None
-    
-    if len(year) == 2:
-        year = datetime.datetime.strptime(year,'%y').strftime('%Y')
-    
-    if len(semester) <= 2:
-        semester = SEMESTER[semester.lower()]
-    else:
-        semester = semester.capitalize()
 
     return Course(department, course_number, year, semester)
 
