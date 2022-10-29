@@ -80,10 +80,9 @@ def course_string_to_object_with_regex(course_str):
     return Course(department, course_number, year, semester)
 
 
-if __name__ == '__main__':
-    print(course_string_to_object_step_by_step('CS:111 16fall'))
-    print(course_string_to_object_step_by_step('CS-111 Fall 2016'))
-    print(course_string_to_object_step_by_step('CS111 F2016'))
-    print(course_string_to_object_with_regex('CS:111 16fall'))
-    print(course_string_to_object_with_regex('CS-111 Fall 2016'))
-    print(course_string_to_object_with_regex('CS111 F2016'))
+print(course_string_to_object_step_by_step('CS111 2016 Fall'))
+print(course_string_to_object_step_by_step('CS-111 Fall 2016'))
+print(course_string_to_object_step_by_step('CS 111 F2016'))
+print(course_string_to_object_with_regex('CS111 2016 Fall'))
+print(course_string_to_object_with_regex('CS-111 Fall 2016'))
+print(course_string_to_object_with_regex('CS 111 F2016'))
